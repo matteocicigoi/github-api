@@ -6,18 +6,19 @@ export default {
         return {
             store,
             name: '',
-            type: 'Repositories'
+            type: 'Repositories',
+            debounceTimer : null
         }
     },
     methods: {
         search() {
-            if(this.name.length >= 3){
+            if (this.name.length >= 3) {
                 // se il nome è maggiore di 3 caratteri
                 let url = null;
-                if(this.type === 'Repositories'){
+                if (this.type === 'Repositories') {
                     // se la categoria è repositories
                     url = 'https://api.github.com/search/repositories?q=' + this.name;
-                }else{
+                } else {
                     // altrimenti un user
                     url = 'https://api.github.com/search/users?q=' + this.name;
                 }
@@ -25,10 +26,10 @@ export default {
                 this.store.find = false;
                 this.store.items = null;
                 axios.get(url).then((response) => {
-                    if(response.data.items.length === 0){
+                    if (response.data.items.length === 0) {
                         // se non ci sono risultati
                         this.store.items = '0';
-                    }else{
+                    } else {
                         this.store.items = response.data.items;
                     }
                 }).finally((response) => {
@@ -36,18 +37,26 @@ export default {
                     this.store.find = true;
                 });
             }
+        },
+        delayedSearch() {
+            // se l'utente smette di digitare
+            clearTimeout(this.debounceTimer);
+            this.debounceTimer = setTimeout(() => {
+                this.search();
+            }, 700);
         }
-    }   
+    }
 }
 </script>
 <template>
     <div class="row align-items-center">
         <div class="col-auto">
             <label for="inputPassword2" class="visually-hidden">Cosa vuoi cercare?</label>
-            <input type="text" class="form-control" id="inputPassword2" placeholder="Cosa vuoi cercare?" v-model="name">
+            <input type="text" class="form-control" id="inputPassword2" placeholder="Cosa vuoi cercare?" v-model="name"
+                @input="delayedSearch()">
         </div>
         <div class="col-auto">
-            <select class="form-select" aria-label="Default select example"  v-model="type">
+            <select class="form-select" aria-label="Default select example" v-model="type">
                 <option value="Repositories" selected>Repositories</option>
                 <option value="Users">Users</option>
             </select>
