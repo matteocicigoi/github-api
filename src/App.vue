@@ -12,11 +12,9 @@ export default {
 <template>
 
   <Header />
+  <!-- Main -->
   <main>
     <Output />
-
   </main>
+  <!-- Fine Main -->
 </template>
-
-<style scoped>
-</style>

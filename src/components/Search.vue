@@ -11,15 +11,29 @@ export default {
     },
     methods: {
         search() {
-            if(this.name !== ''){
+            if(this.name.length >= 3){
+                // se il nome è maggiore di 3 caratteri
                 let url = null;
                 if(this.type === 'Repositories'){
+                    // se la categoria è repositories
                     url = 'https://api.github.com/search/repositories?q=' + this.name;
                 }else{
+                    // altrimenti un user
                     url = 'https://api.github.com/search/users?q=' + this.name;
                 }
+                // attiva il caricamento e fa la chiamata api
+                this.store.find = false;
+                this.store.items = null;
                 axios.get(url).then((response) => {
-                    this.store.items = response.data.items;
+                    if(response.data.items.length === 0){
+                        // se non ci sono risultati
+                        this.store.items = '0';
+                    }else{
+                        this.store.items = response.data.items;
+                    }
+                }).finally((response) => {
+                    // disattiva il caricamento
+                    this.store.find = true;
                 });
             }
         }

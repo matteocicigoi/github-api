@@ -7,6 +7,7 @@ export default {
 }
 </script>
 <template>
+    <!-- Header -->
     <header>
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
@@ -15,4 +16,5 @@ export default {
             </div>
         </nav>
     </header>
+    <!-- Fine Header -->
 </template>
