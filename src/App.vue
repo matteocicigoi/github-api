@@ -1,19 +1,18 @@
 <script>
-import Search from './components/Search.vue';
 import Output from './components/Output.vue';
+import Header from './components/Header.vue';
 export default {
   components: {
-    Search,
-    Output
+    Output,
+    Header
   }
 }
 </script>
 
 <template>
 
+  <Header />
   <main>
-    <h1>GitHub API</h1>
-    <Search />
     <Output />
 
   </main>
